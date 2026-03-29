@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Garia Fish Fix | Fresh, Marinated, Ready-to-Fry Fish Delivery</title>
+    
+    <meta name="description" content="Authentic Bengali fish delivery in Garia. Freshly sourced, cleaned, and marinated.">
+    <meta name="theme-color" content="#0a2342">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & THEME ENGINE
+           ========================================================================== */
+        :root {
+            --primary: #0f3460;
+            --secondary: #22a6b3;
+            --accent: #ff5e3a;
+            --success: #10b981;
+            --bg-main: #f8fafc;
+            --bg-surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --footer-bg: #0f3460;
+            
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --nav-height: 80px;
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05);
+            --shadow-lg: 0 20px 40px -5px rgba(0,0,0,0.1);
+            --transition: 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        [data-theme="dark"] {
+            --primary: #60a5fa;
+            --bg-main: #0f172a;
+            --bg-surface: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --shadow-lg: 0 20px 40px -5px rgba(0,0,0,0.4);
+        }
+
+        /* ==========================================================================
+           2. RESET & BASE
+           ========================================================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg-main); color: var(--text-main); overflow-x: hidden; line-height: 1.6; transition: background 0.3s, color 0.3s; }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--text-main); }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; padding: 0; }
+        button, input, select, textarea { font-family: inherit; outline: none; border: none; }
+
+        /* ==========================================================================
+           3. LAYOUT & UTILITIES
+           ========================================================================== */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .section-py { padding: 80px 0; }
+        .text-center { text-align: center; }
+        
+        .badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .badge-primary { background: rgba(34, 166, 179, 0.1); color: var(--secondary); }
+        
+        .btn { display: inline-flex; justify-content: center; align-items: center; gap: 10px; padding: 16px 32px; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; transition: var(--transition); font-size: 1rem; }
+        .btn-accent { background: var(--accent); color: white; box-shadow: 0 8px 20px rgba(255,94,58,0.3); }
+        .btn-accent:hover { transform: translateY(-3px); background: #e04825; }
+        .btn-outline { background: transparent; border: 2px solid var(--border-color); color: var(--text-main); }
+        .btn-icon { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--bg-surface); color: var(--text-main); box-shadow: var(--shadow-sm); cursor: pointer; transition: 0.2s; }
+        .btn-icon:hover { transform: scale(1.1); color: var(--accent); }
+
+        /* ==========================================================================
+           4. HEADER & NAV
+           ========================================================================== */
+        header { position: fixed; top: 0; width: 100%; height: var(--nav-height); z-index: 1000; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color); transition: 0.3s; }
+        [data-theme="dark"] header { background: rgba(30,41,59,0.85); }
+        
+        .nav-inner { height: 100%; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: 8px; font-family: 'Plus Jakarta Sans'; }
+        .logo span { color: var(--secondary); }
+        
+        .nav-links { display: flex; gap: 30px; font-weight: 600; font-size: 0.95rem; }
+        .nav-links a:hover { color: var(--secondary); }
+        
+        .nav-actions { display: flex; align-items: center; gap: 15px; }
+        .cart-toggle { position: relative; }
+        .cart-badge { position: absolute; top: -5px; right: -5px; background: var(--accent); color: white; font-size: 0.7rem; font-weight: 800; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+        .live-banner { background: var(--primary); color: white; text-align: center; padding: 10px; font-size: 0.85rem; font-weight: 600; margin-top: var(--nav-height); }
+        [data-theme="dark"] .live-banner { background: #000; }
+
+        /* ==========================================================================
+           5. HERO CAROUSEL
+           ========================================================================== */
+        .hero-slider { position: relative; width: 100%; height: 80vh; min-height: 500px; overflow: hidden; display: flex; align-items: center; }
+        .carousel-track { display: flex; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+        .carousel-slide { min-width: 100%; height: 100%; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; }
+        .carousel-content { transform: translateY(30px); opacity: 0; transition: all 0.8s ease 0.3s; color: white; width: 100%; }
+        .carousel-slide.active-slide .carousel-content { transform: translateY(0); opacity: 1; }
+        
+        .carousel-content h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.2; margin: 20px 0; color: white; }
+        .carousel-content p { font-size: 1.15rem; color: #e2e8f0; max-width: 600px; margin: 0 auto 30px; }
+        
+        .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; transition: 0.3s; z-index: 10; }
+        .carousel-btn:hover { background: var(--accent); }
+        .carousel-btn.prev { left: 20px; }
+        .carousel-btn.next { right: 20px; }
+        
+        .carousel-dots { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: 0.3s; }
+        .dot.active { background: var(--accent); transform: scale(1.2); }
+
+        /* ==========================================================================
+           6. HOW IT WORKS
+           ========================================================================== */
+        .how-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 50px; }
+        .how-card { background: var(--bg-surface); padding: 40px 30px; border-radius: var(--radius-lg); text-align: center; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); position: relative; transition: var(--transition); }
+        .how-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-lg); border-color: var(--secondary); }
+        .how-icon { width: 80px; height: 80px; background: rgba(34, 166, 179, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem; color: var(--secondary); }
+        .step-num { position: absolute; top: 15px; right: 20px; font-size: 3rem; font-weight: 800; color: var(--border-color); opacity: 0.5; }
+
+        /* ==========================================================================
+           7. DYNAMIC APP MENU (Store)
+           ========================================================================== */
+        .store-controls { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 40px; background: var(--bg-surface); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color); }
+        .filters { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; }
+        .filter-btn { padding: 10px 20px; border-radius: 50px; background: var(--bg-main); color: var(--text-muted); font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.3s; }
+        .filter-btn.active, .filter-btn:hover { background: var(--primary); color: white; }
+        .search-box { position: relative; flex: 1; min-width: 250px; }
+        .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+        .search-box input { width: 100%; background: var(--bg-main); padding: 14px 14px 14px 45px; border-radius: var(--radius-md); color: var(--text-main); font-size: 1rem; border: 1px solid transparent; transition: 0.3s; }
+        .search-box input:focus { border-color: var(--secondary); }
+
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+        .product-card { background: var(--bg-surface); border-radius: var(--radius-lg); padding: 15px; border: 1px solid var(--border-color); transition: var(--transition); display: flex; flex-direction: column; position: relative; }
+        .product-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-lg); }
+        .product-img-wrapper { height: 220px; border-radius: var(--radius-md); overflow: hidden; position: relative; margin-bottom: 15px; background: #e2e8f0; }
+        .product-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .product-card:hover .product-img-wrapper img { transform: scale(1.1); }
+        .prep-tag { position: absolute; bottom: 10px; right: 10px; background: var(--bg-surface); color: var(--text-main); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 800; box-shadow: var(--shadow-sm); }
+        .product-cat { font-size: 0.75rem; color: var(--secondary); font-weight: 800; text-transform: uppercase; margin-bottom: 5px; }
+        .product-title { font-size: 1.2rem; font-family: 'Plus Jakarta Sans'; font-weight: 800; margin-bottom: 5px; }
+        .product-desc { font-size: 0.85rem; color: var(--text-muted); flex-grow: 1; margin-bottom: 15px; }
+        .variant-select { width: 100%; padding: 10px; background: var(--bg-main); border-radius: 8px; color: var(--text-main); margin-bottom: 15px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); }
+        .product-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 15px; }
+        .product-price { font-size: 1.4rem; font-weight: 800; color: var(--primary); }
+        .add-to-cart-btn { background: var(--bg-main); color: var(--primary); width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; border: 1px solid var(--border-color); }
+        .add-to-cart-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
+        /* ==========================================================================
+           8. SUBSCRIPTIONS, TESTIMONIALS, ABOUT, FAQ
+           ========================================================================== */
+        .sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 50px; max-width: 1000px; margin-inline: auto; }
+        .sub-card { background: var(--bg-surface); padding: 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); position: relative; border: 2px solid var(--border-color); display: flex; flex-direction: column; }
+        .sub-card.popular { border-color: var(--secondary); }
+        .popular-badge { position: absolute; top: -15px; right: 20px; background: var(--secondary); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
+        .sub-price { font-size: 2.5rem; font-weight: 800; color: var(--primary); margin: 20px 0; }
+        .sub-price span { font-size: 1rem; color: var(--text-muted); }
+        .sub-list { list-style: none; padding: 0; margin-bottom: 30px; flex-grow: 1; text-align: left; }
+        .sub-list li { margin-bottom: 15px; font-size: 0.95rem; display: flex; align-items: flex-start; gap: 10px; }
+        .sub-list i { color: var(--success); margin-top: 4px; }
+
+        .review-card { background: var(--bg-surface); padding: 30px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); }
+        .stars { color: #f59e0b; margin-bottom: 15px; }
+        .reviewer { display: flex; align-items: center; gap: 15px; margin-top: 20px; }
+        .reviewer img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+
+        .faq-item { background: var(--bg-surface); border-radius: var(--radius-md); margin-bottom: 15px; border: 1px solid var(--border-color); overflow: hidden; text-align: left; }
+        .faq-question { width: 100%; text-align: left; padding: 20px; background: transparent; font-weight: 700; font-size: 1.05rem; color: var(--text-main); cursor: pointer; display: flex; justify-content: space-between; align-items: center; border: none; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding: 0 20px; color: var(--text-muted); }
+        .faq-answer p { margin-top: 0; padding-bottom: 20px; }
+        .faq-item.active .faq-answer { max-height: 300px; }
+        .faq-item.active .faq-question i { transform: rotate(180deg); color: var(--secondary); }
+
+        /* ==========================================================================
+           9. FOOTER & FLOATING WHATSAPP
+           ========================================================================== */
+        footer { background: var(--footer-bg); color: #ffffff; padding: 80px 20px 30px; margin-top: 50px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; max-width: 1200px; margin: 0 auto 50px; text-align: left; }
+        footer h3 { color: #ffffff; margin-bottom: 25px; font-size: 1.2rem; font-family: 'Plus Jakarta Sans'; font-weight: 800; }
+        footer p { color: #cbd5e1; font-size: 0.95rem; margin-bottom: 10px; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: #cbd5e1; font-size: 0.95rem; }
+        .footer-links a:hover { color: var(--secondary); padding-left: 5px; }
+        
+        .socials { display: flex; gap: 15px; margin-top: 20px; }
+        .socials a { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: white; transition: 0.3s; }
+        .socials a:hover { background: var(--secondary); transform: translateY(-3px); }
+        
+        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; font-size: 0.9rem; }
+        .footer-bottom i { color: #ef4444; }
+
+        .whatsapp-float { position: fixed; bottom: 30px; right: 30px; background-color: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4); z-index: 999; transition: var(--transition); }
+        .whatsapp-float:hover { transform: scale(1.1); background-color: #20ba56; }
+
+        /* ==========================================================================
+           10. APP COMPONENTS (Cart, Modal, Toasts)
+           ========================================================================== */
+        .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 2000; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .cart-overlay.active { opacity: 1; pointer-events: all; }
+        .cart-drawer { position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100vh; background: var(--bg-surface); z-index: 2001; transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
+        .cart-drawer.active { right: 0; }
+        .cart-header { padding: 25px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        .close-cart { cursor: pointer; width: 40px; height: 40px; background: var(--bg-main); border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+        .cart-body { flex: 1; overflow-y: auto; padding: 25px; display: flex; flex-direction: column; gap: 20px; }
+        .cart-item { display: flex; gap: 15px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); position: relative; }
+        .cart-item-img { width: 70px; height: 70px; border-radius: 8px; object-fit: cover; }
+        .qty-controls { display: flex; align-items: center; gap: 10px; background: var(--bg-main); padding: 5px; border-radius: 50px; width: fit-content; margin-top: 5px;}
+        .qty-btn { width: 24px; height: 24px; background: var(--bg-surface); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: var(--shadow-sm); }
+        .cart-footer { padding: 25px; background: var(--bg-main); border-top: 1px solid var(--border-color); }
+        .bill-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem; color: var(--text-muted); }
+        .bill-total { display: flex; justify-content: space-between; margin: 15px 0; font-size: 1.4rem; font-weight: 800; color: var(--text-main); border-top: 2px dashed var(--border-color); padding-top: 15px; }
+
+        /* Checkout Modal */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal-box { background: var(--bg-surface); width: 100%; max-width: 500px; border-radius: var(--radius-lg); padding: 30px; position: relative; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from{transform: translateY(30px); opacity:0;} to{transform:translateY(0); opacity:1;} }
+        .form-group { margin-bottom: 15px; }
+        .form-input { width: 100%; padding: 14px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); font-size: 1rem; }
+        .form-input:focus { border-color: var(--secondary); }
+
+        /* Toasts */
+        #toast-container { position: fixed; bottom: 100px; left: 30px; z-index: 9998; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .dynamic-toast { background: var(--bg-surface); color: var(--text-main); padding: 15px 20px; border-radius: 16px; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 15px; transform: translateX(-150%); transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); border-left: 4px solid var(--secondary); max-width: 300px; }
+        .dynamic-toast.show { transform: translateX(0); }
+
+        @media(max-width: 768px) {
+            .nav-links { display: none; }
+            .hero-slider h1 { font-size: 2.5rem; }
+            #toast-container { bottom: 100px; left: 10px; right: 10px; align-items: center; }
+            .dynamic-toast { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-inner">
+            <a href="#" class="logo"><i class="fa-solid fa-fish-fins"></i> GariaFish<span>Fix</span></a>
+            
+            <nav class="nav-links">
+                <a href="#how-it-works">How it Works</a>
+                <a href="#menu">Menu</a>
+                <a href="#subscriptions">Subscriptions</a>
+                <a href="#about">Our Story</a>
+                <a href="#faq">FAQs</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button class="btn-icon" id="theme-toggle" title="Toggle Dark Mode"><i class="fa-solid fa-moon"></i></button>
+                <button class="btn-icon cart-toggle" id="open-cart-btn">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-badge" id="nav-cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="live-banner">🔥 Order before 11 AM for Lunch Delivery | FREE Cleaning on all orders!</div>
+
+    <!-- Hero Image Carousel -->
+    <section class="hero-slider">
+        <div class="carousel-track" id="carousel-track">
+            <!-- Slide 1 -->
+            <div class="carousel-slide" style="background-image: linear-gradient(rgba(15, 52, 96, 0.7), rgba(15, 52, 96, 0.7)), url('https://images.unsplash.com/photo-1534604973900-c41ab4cd308c?w=1920&q=80');">
+                <div class="container text-center carousel-content">
+                    <span class="badge badge-primary"><i class="fa-solid fa-clock"></i> 45-Min Hyperlocal Delivery</span>
+                    <h1>Fresh Fish. Cleaned. <br>Ready to Fry.</h1>
+                    <p>Premium Bengali fish, expertly cleaned and authentically marinated.</p>
+                    <button class="btn btn-accent" onclick="document.getElementById('menu').scrollIntoView()">Shop Today's Catch</button>
+                </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="carousel-slide" style="background-image: linear-gradient(rgba(15, 52, 96, 0.7), rgba(15, 52, 96, 0.7)), url('https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?w=1920&q=80');">
+                <div class="container text-center carousel-content">
+                    <span class="badge badge-primary" style="background:var(--accent); color:white;">Special Offer</span>
+                    <h1>Gold Chingri (Prawns)</h1>
+                    <p>Deveined Tiger Prawns. Perfect for Sunday Malaikari.</p>
+                    <button class="btn btn-accent" onclick="document.getElementById('menu').scrollIntoView()">Order Prawns Now</button>
+                </div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="carousel-slide" style="background-image: linear-gradient(rgba(15, 52, 96, 0.7), rgba(15, 52, 96, 0.7)), url('https://images.unsplash.com/photo-1580554182834-df949d03a11b?w=1920&q=80');">
+                <div class="container text-center carousel-content">
+                    <span class="badge badge-primary"><i class="fa-solid fa-fire"></i> Authentic Taste</span>
+                    <h1>Classic Shorshe Bhetki</h1>
+                    <p>Marinated in rich mustard paste. Just open the pack and pan-fry.</p>
+                    <button class="btn btn-accent" onclick="document.getElementById('menu').scrollIntoView()">Explore Menu</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Carousel Controls -->
+        <button class="carousel-btn prev" onclick="moveSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="carousel-btn next" onclick="moveSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
+        <div class="carousel-dots" id="carousel-dots"></div>
+    </section>
+
+    <!-- How it Works -->
+    <section id="how-it-works" class="section-py" style="background: var(--bg-main);">
+        <div class="container text-center">
+            <span class="badge badge-primary">Seamless Experience</span>
+            <h2>How We Make It Easy</h2>
+            <div class="how-grid">
+                <div class="how-card">
+                    <span class="step-num">01</span>
+                    <div class="how-icon"><i class="fa-solid fa-ship"></i></div>
+                    <h3>Sourced Daily</h3>
+                    <p>Early morning catch sourced directly from wholesale hubs.</p>
+                </div>
+                <div class="how-card">
+                    <span class="step-num">02</span>
+                    <div class="how-icon"><i class="fa-solid fa-kitchen-set"></i></div>
+                    <h3>Clean & Marinate</h3>
+                    <p>De-scaled, cut, washed, and marinated with authentic spices.</p>
+                </div>
+                <div class="how-card">
+                    <span class="step-num">03</span>
+                    <div class="how-icon"><i class="fa-solid fa-motorcycle"></i></div>
+                    <h3>Delivered Fresh</h3>
+                    <p>Vacuum-sealed, ice-packed delivery at your home. Ready to cook!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Store (Menu) -->
+    <section id="menu" class="section-py">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 40px;">
+                <span class="badge badge-primary">The Menu</span>
+                <h2>Our Ready-To-Cook Best Sellers</h2>
+            </div>
+
+            <div class="store-controls">
+                <div class="filters" id="category-filters"></div>
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="search-input" placeholder="Search Bhetki, Prawns, Katla...">
+                </div>
+            </div>
+
+            <!-- Dynamic Product Grid -->
+            <div class="grid-cards" id="product-grid">
+                <!-- Injected via Google Sheets JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Subscriptions -->
+    <section id="subscriptions" class="section-py" style="background: var(--bg-main);">
+        <div class="container text-center">
+            <span class="badge badge-primary">Save Time & Money</span>
+            <h2>Never Run Out Of Fish</h2>
+            <div class="sub-grid" id="subscriptions-grid">
+                <p style="color: var(--text-muted); width: 100%;">Loading subscription plans...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section-py">
+        <div class="container text-center">
+            <span class="badge badge-primary">What Garia Says</span>
+            <h2>Loved by Local Families</h2>
+            <div class="grid-cards" style="margin-top: 40px; text-align: left;">
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Being a working couple, we don't have time for the fish market. Fish Fix's marinated Bhetki is a savior!"</p>
+                    <div class="reviewer">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Reviewer">
+                        <div><h4 style="margin:0;">Sreemoyee Sen</h4><p style="margin:0; font-size:0.8rem; color:var(--text-muted);">Garia</p></div>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"The Rohu cuts were pristine. No extra scales, fresh smell. A blessing for us elderly."</p>
+                    <div class="reviewer">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Reviewer">
+                        <div><h4 style="margin:0;">Anirban Dasgupta</h4><p style="margin:0; font-size:0.8rem; color:var(--text-muted);">Mahamayatala</p></div>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"The Shorshe marination is exactly how my grandmother used to make it. 10 minutes on the pan and it's heaven!"</p>
+                    <div class="reviewer">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Reviewer">
+                        <div><h4 style="margin:0;">Priyanka C.</h4><p style="margin:0; font-size:0.8rem; color:var(--text-muted);">Narendrapur</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section-py" style="background: var(--bg-main);">
+        <div class="container text-center" style="max-width: 800px;">
+            <span class="badge badge-primary">Our Story</span>
+            <h2>Garia's Trusted Kitchen Partner</h2>
+            <p style="font-size: 1.1rem; margin-top: 20px;">We started Garia Fish Fix with a single goal: let Bengalis enjoy their favorite daily meals without the drudgery and smell of fish prepping. We treat every order as if it's going to our own home kitchen. Hygienic, honest, and hyper-local to the core.</p>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section-py">
+        <div class="container text-center">
+            <span class="badge badge-primary">Got Questions?</span>
+            <h2>Frequently Asked Questions</h2>
+            <div style="max-width: 700px; margin: 40px auto 0;">
+                <div class="faq-item">
+                    <button class="faq-question">How fresh is the fish? <i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="faq-answer"><p>We source daily at 4:00 AM from local wholesale hubs. It is processed immediately under temperature-controlled environments and delivered to you within hours.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">How long can I store the marinated fish? <i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="faq-answer"><p>Our marinated packs are best if cooked within 24 hours of delivery. If frozen, they can last up to 3 days, but we recommend cooking fresh!</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">What are the payment methods? <i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="faq-answer"><p>We accept UPI (GPay, PhonePe, Paytm) upon delivery, Cash on Delivery, and Online Bank Transfers.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h3>Garia Fish Fix</h3>
+                <p>Solving messy fish prep for urban Bengali households. Delivering fresh, marinated fish in Garia.</p>
+                <div class="socials">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://wa.me/966572562151"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div>
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#menu">Our Menu</a></li>
+                    <li><a href="#subscriptions">Subscription Plans</a></li>
+                    <li><a href="#faq">FAQs</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Delivery Hotspots</h3>
+                <ul class="footer-links">
+                    <li>📍 Garia (Mahamayatala, Station, Bus Stand)</li>
+                    <li>📍 Narendrapur</li>
+                    <li>📍 Sonarpur</li>
+                    <li>📍 Patuli & Bypass Connector</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2024 Garia Fish Fix. All rights reserved. | Made with <i class="fa-solid fa-heart"></i> in Kolkata
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/966572562151" class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- CART SYSTEM HTML -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <aside class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h3 style="margin:0; font-family:'Plus Jakarta Sans'; font-size:1.3rem;"><i class="fa-solid fa-basket-shopping" style="color:var(--accent);"></i> My Fish Bag</h3>
+            <div class="close-cart" id="close-cart-btn"><i class="fa-solid fa-xmark"></i></div>
+        </div>
+        <div class="cart-body" id="cart-body"></div>
+        <div class="cart-footer">
+            <div class="bill-row"><span>Items Subtotal</span><span id="cart-subtotal">₹0</span></div>
+            <div class="bill-row"><span>Delivery</span><span id="cart-delivery">₹30</span></div>
+            <div class="bill-total"><span>Total</span><span id="cart-total" style="color:var(--accent);">₹0</span></div>
+            <button class="btn btn-accent" style="width: 100%; justify-content: space-between;" id="checkout-btn">
+                <span>Proceed to Order</span><i class="fa-brands fa-whatsapp"></i>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkout-modal">
+        <div class="modal-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin:0;">Delivery Details</h2>
+                <i class="fa-solid fa-xmark close-cart" id="close-modal-btn" style="cursor: pointer;"></i>
+            </div>
+            <form id="checkout-form">
+                <input type="hidden" id="sub-plan-name">
+                <div class="form-group">
+                    <input type="text" id="cust-name" class="form-input" placeholder="Your Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="cust-address" class="form-input" placeholder="Delivery Landmark (Garia/Sonarpur)" required>
+                </div>
+                <button type="submit" class="btn btn-accent" style="width: 100%;"><i class="fa-brands fa-whatsapp"></i> Send Order on WhatsApp</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dynamic Social Proof Container -->
+    <div id="toast-container"></div>
+
+    <!-- JAVASCRIPT APP ENGINE -->
+    <script>
+        // ==========================================================================
+        // 1. DATABASE & GOOGLE SHEETS API (FIXED ROBUST VERSION)
+        // ==========================================================================
+        /*
+            ⚠️ IMPORTANT SHEET FORMAT ⚠️
+            Products Sheet Columns: 0:ID, 1:Title, 2:Category, 3:Description, 4:Image URL, 5:Prep Type, 6:Variant1 Name, 7:Variant1 Price, 8:Variant2 Name, 9:Variant2 Price
+            Subscriptions Sheet Columns: 0:Title, 1:Description, 2:Price, 3:Badge, 4:Features (comma separated)
+        */
+        const GOOGLE_SHEET_ID = '1xREeUJkxgI8nCtsBzzH6UaN4plkLo1vWwGKjOcB1CCo'; 
+        
+        let productsDB = [];
+        let subscriptionsDB = [];
+
+        // Safe getter function to prevent crashes on completely empty cells
+        const getVal = (row, index) => {
+            if (!row || !row.c || !row.c[index]) return '';
+            let val = row.c[index].v;
+            return (val !== null && val !== undefined) ? String(val) : '';
+        };
+
+        // Prevents breaking if users type "Rs 299" or "₹299" instead of "299" in their sheet
+        const parsePrice = (val) => {
+            if (!val) return 0;
+            const num = parseFloat(String(val).replace(/[^0-9.]/g, ''));
+            return isNaN(num) ? 0 : num;
+        };
+
+        // Bulletproof JSON extractor for Google API Responses
+        const extractJSON = (text) => {
+            const start = text.indexOf('{');
+            const end = text.lastIndexOf('}') + 1;
+            if (start > -1 && end > start) {
+                return JSON.parse(text.substring(start, end));
+            }
+            throw new Error("INVALID_GOOGLE_JSON");
+        };
+
+        async function fetchGoogleSheetData() {
+            try {
+                const prodUrl = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=Products`;
+                const subUrl = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=Subscriptions`;
+                
+                const [prodRes, subRes] = await Promise.all([fetch(prodUrl), fetch(subUrl)]);
+                
+                if (!prodRes.ok || !subRes.ok) throw new Error("NETWORK_ERROR");
+
+                const prodText = await prodRes.text();
+                const subText = await subRes.text();
+
+                // Privacy Check
+                if (prodText.includes('<html') || prodText.includes('Sign in') || subText.includes('<html')) {
+                    throw new Error("PRIVATE_SHEET");
+                }
+
+                // Extract and Parse
+                const prodJson = extractJSON(prodText);
+                const subJson = extractJSON(subText);
+
+                // Map Products Safely - ignoring header rows and empty rows
+                productsDB = prodJson.table.rows
+                    .filter(row => {
+                        const idVal = getVal(row, 0).trim();
+                        return idVal !== '' && idVal.toLowerCase() !== 'id'; 
+                    })
+                    .map(row => {
+                        let variants = [];
+                        let v1L = getVal(row, 6), v1P = getVal(row, 7);
+                        let v2L = getVal(row, 8), v2P = getVal(row, 9);
+                        
+                        if(v1L.trim() !== '' && v1P.trim() !== '') variants.push({ label: v1L, price: parsePrice(v1P) }); 
+                        if(v2L.trim() !== '' && v2P.trim() !== '') variants.push({ label: v2L, price: parsePrice(v2P) }); 
+                        
+                        return {
+                            id: getVal(row, 0).trim(), // Strict string
+                            title: getVal(row, 1) || 'Fresh Fish',
+                            category: getVal(row, 2) || 'Raw Fish',
+                            desc: getVal(row, 3),
+                            img: getVal(row, 4) || 'https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6?w=600',
+                            prepType: getVal(row, 5) || 'Cleaned',
+                            variants: variants.length > 0 ? variants : [{ label: '1 Kg', price: 0 }]
+                        };
+                    });
+
+                // Map Subscriptions Safely - ignoring header rows
+                subscriptionsDB = subJson.table.rows
+                    .filter(row => {
+                        const tVal = getVal(row, 0).trim();
+                        return tVal !== '' && tVal.toLowerCase() !== 'title'; 
+                    })
+                    .map(row => {
+                        let badgeVal = getVal(row, 3);
+                        let featuresString = getVal(row, 4);
+                        return {
+                            title: getVal(row, 0),
+                            desc: getVal(row, 1),
+                            price: parsePrice(getVal(row, 2)),
+                            badge: (badgeVal && badgeVal.toLowerCase() !== 'null' && badgeVal.trim() !== '') ? badgeVal : null,
+                            features: featuresString ? featuresString.split(',').map(f=>f.trim()).filter(f=>f!=='') : []
+                        };
+                    });
+
+                console.log("✅ Google Sheets Data Loaded Successfully!");
+
+            } catch (error) {
+                console.error("❌ Data Load Error:", error);
+                if (error.message === "PRIVATE_SHEET") {
+                    alert("⚠️ Action Required: Your Google Sheet is private. You MUST click 'File' -> 'Share' -> 'Publish to web' in your Google Sheet for the live data to work.");
+                }
+
+                // FALLBACK DATA
+                productsDB = [
+                    { id: 'p1', title: 'Rohu / Katla Basic', category: 'Raw Fish', desc: 'Perfectly de-scaled, pet-kata, and gaanth cuts.', img: 'https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6?w=600&q=80', prepType: 'Cleaned', variants: [{ label: '1 Kg', price: 299 }, { label: '500g', price: 160 }] },
+                    { id: 'p2', title: 'Classic Shorshe Bhetki', category: 'Marinated', desc: 'Premium Bhetki marinated in rich mustard paste.', img: 'https://images.unsplash.com/photo-1519708227418-c8fd9a3237a2?w=600&q=80', prepType: 'Ready to Cook', variants: [{ label: '1 Kg', price: 549 }, { label: '500g', price: 280 }] }
+                ];
+                subscriptionsDB = [
+                    { title: 'Weekly Fish Fix', desc: 'Ideal for nuclear families.', price: 1499, badge: null, features: ['4 Deliveries/mo', '1.5 Kg Fish/Delivery', 'Free Cleaning'] }
+                ];
+            }
+        }
+
+        // ==========================================================================
+        // 2. APP STATE & DOM ELEMENTS
+        // ==========================================================================
+        let state = {
+            cart: JSON.parse(localStorage.getItem('gf_cart')) || [],
+            category: 'All', query: '',
+            dark: localStorage.getItem('gf_theme') === 'dark'
+        };
+
+        const DOM = {
+            grid: document.getElementById('product-grid'), filters: document.getElementById('category-filters'),
+            search: document.getElementById('search-input'), cartOverlay: document.getElementById('cart-overlay'),
+            cartDrawer: document.getElementById('cart-drawer'), cartBody: document.getElementById('cart-body'),
+            totalCount: document.getElementById('nav-cart-count'), sub: document.getElementById('cart-subtotal'),
+            dlv: document.getElementById('cart-delivery'), tot: document.getElementById('cart-total'),
+            checkoutBtn: document.getElementById('checkout-btn'), modal: document.getElementById('checkout-modal'),
+            checkoutForm: document.getElementById('checkout-form'), subPlanInput: document.getElementById('sub-plan-name')
+        };
+
+        // ==========================================================================
+        // 3. CAROUSEL LOGIC
+        // ==========================================================================
+        let currentSlide = 0;
+        let slideInterval;
+        
+        function initCarousel() {
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dotsContainer = document.getElementById('carousel-dots');
+            
+            slides.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (i === 0) dot.classList.add('active');
+                dot.onclick = () => goToSlide(i);
+                dotsContainer.appendChild(dot);
+            });
+            
+            if(slides.length > 0) slides[0].classList.add('active-slide');
+            slideInterval = setInterval(() => moveSlide(1), 5000); 
+        }
+
+        window.moveSlide = function(direction) {
+            const slides = document.querySelectorAll('.carousel-slide');
+            goToSlide((currentSlide + direction + slides.length) % slides.length);
+        }
+
+        function goToSlide(index) {
+            const track = document.getElementById('carousel-track');
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dots = document.querySelectorAll('.dot');
+            
+            currentSlide = index;
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            slides.forEach(s => s.classList.remove('active-slide'));
+            dots.forEach(d => d.classList.remove('active'));
+            
+            if(slides[currentSlide]) slides[currentSlide].classList.add('active-slide');
+            if(dots[currentSlide]) dots[currentSlide].classList.add('active');
+            
+            clearInterval(slideInterval);
+            slideInterval = setInterval(() => moveSlide(1), 5000);
+        }
+
+        // ==========================================================================
+        // 4. RENDERING & UI GENERATION
+        // ==========================================================================
+        async function init() {
+            if(state.dark) document.documentElement.setAttribute('data-theme', 'dark');
+            initCarousel(); 
+
+            // Wait for Google Sheets to load data
+            await fetchGoogleSheetData(); 
+            
+            // Build UI Filters
+            const cats = ['All', ...new Set(productsDB.map(p => p.category))];
+            DOM.filters.innerHTML = cats.map(c => `<button class="filter-btn ${state.category===c?'active':''}" data-c="${c}">${c}</button>`).join('');
+            
+            renderProducts(); 
+            renderCart();
+            renderSubscriptions();
+        }
+
+        function renderProducts() {
+            const list = productsDB.filter(p => (state.category === 'All' || p.category === state.category) && p.title.toLowerCase().includes(state.query.toLowerCase()));
+            
+            if(list.length === 0) {
+                DOM.grid.innerHTML = '<p style="text-align:center; grid-column:1/-1;">No products found.</p>';
+                return;
+            }
+
+            // Notice: added strict String casting in the onchange logic
+            DOM.grid.innerHTML = list.map(p => `
+                <div class="product-card">
+                    <div class="product-img-wrapper"><img src="${p.img}" onerror="this.src='https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6?w=600'"><div class="prep-tag">${p.prepType}</div></div>
+                    <div class="product-cat">${p.category}</div><h3 class="product-title">${p.title}</h3><p class="product-desc">${p.desc}</p>
+                    <select class="variant-select" id="v-${p.id}" onchange="document.getElementById('p-${p.id}').innerText='₹'+productsDB.find(x=>String(x.id)==='${p.id}').variants[this.value].price">
+                        ${p.variants.map((v,i) => `<option value="${i}">${v.label} - ₹${v.price}</option>`).join('')}
+                    </select>
+                    <div class="product-footer">
+                        <span class="product-price" id="p-${p.id}">₹${p.variants[0].price}</span>
+                        <div class="add-to-cart-btn" onclick="add('${p.id}')"><i class="fa-solid fa-plus"></i></div>
+                    </div>
+                </div>`).join('');
+        }
+
+        function renderSubscriptions() {
+            const grid = document.getElementById('subscriptions-grid');
+            if(subscriptionsDB.length === 0) {
+                grid.innerHTML = '<p>No subscription plans available right now.</p>';
+                return;
+            }
+
+            grid.innerHTML = subscriptionsDB.map(sub => `
+                <div class="sub-card ${sub.badge ? 'popular' : ''}">
+                    ${sub.badge ? `<div class="popular-badge">${sub.badge}</div>` : ''}
+                    <h3>${sub.title}</h3>
+                    <p style="color: var(--text-muted);">${sub.desc}</p>
+                    <div class="sub-price">₹${sub.price} <span>/ Month</span></div>
+                    <ul class="sub-list">
+                        ${sub.features.map(f => `<li><i class="fa-solid fa-circle-check"></i> <span>${f.trim()}</span></li>`).join('')}
+                    </ul>
+                    <button class="btn ${sub.badge ? 'btn-accent' : 'btn-outline'}" style="width: 100%; margin-top: auto;" onclick="orderSubscription('${sub.title}')">Select Plan</button>
+                </div>
+            `).join('');
+        }
+
+        // ==========================================================================
+        // 5. CART ENGINE
+        // ==========================================================================
+        window.add = (id) => {
+            const safeId = String(id);
+            const p = productsDB.find(x => String(x.id) === safeId); 
+            const vIdx = document.getElementById(`v-${safeId}`).value; 
+            const v = p.variants[vIdx];
+            
+            const exist = state.cart.find(item => item.id === safeId && item.var === v.label);
+            if(exist) exist.qty++; else state.cart.push({ id: safeId, title: p.title, img: p.img, var: v.label, price: v.price, qty: 1 });
+            
+            save(); renderCart(); showToast(`Added ${p.title} to bag!`, false);
+        };
+        window.upd = (i, d) => { state.cart[i].qty += d; if(state.cart[i].qty <= 0) state.cart.splice(i, 1); save(); renderCart(); };
+        window.rem = (i) => { state.cart.splice(i, 1); save(); renderCart(); };
+        function save() { localStorage.setItem('gf_cart', JSON.stringify(state.cart)); }
+
+        function renderCart() {
+            DOM.totalCount.innerText = state.cart.reduce((s,i)=>s+i.qty,0);
+            if(!state.cart.length) {
+                DOM.cartBody.innerHTML = `<div style="text-align:center; color:var(--text-muted); margin-top:50px;"><i class="fa-solid fa-basket-shopping" style="font-size:3rem; opacity:0.3; margin-bottom:15px;"></i><p>Bag is empty</p></div>`;
+                DOM.sub.innerText='₹0'; DOM.tot.innerText='₹0'; DOM.checkoutBtn.style.opacity='0.5'; DOM.checkoutBtn.style.pointerEvents='none'; return;
+            }
+            DOM.cartBody.innerHTML = state.cart.map((c,i) => `
+                <div class="cart-item"><img src="${c.img}" class="cart-item-img" onerror="this.src='https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6?w=600'">
+                <div style="flex:1"><h4 style="margin:0; font-size:0.95rem;">${c.title}</h4><p style="font-size:0.75rem; color:var(--text-muted); margin:0;">${c.var}</p>
+                <div class="qty-controls"><div class="qty-btn" onclick="upd(${i},-1)">-</div><div style="width:20px; text-align:center; font-size:0.85rem; font-weight:bold;">${c.qty}</div><div class="qty-btn" onclick="upd(${i},1)">+</div></div></div>
+                <div style="text-align:right"><div style="font-weight:bold; color:var(--primary); margin-bottom:10px;">₹${c.price*c.qty}</div><i class="fa-solid fa-trash" style="color:#ef4444; cursor:pointer;" onclick="rem(${i})"></i></div></div>
+            `).join('');
+            const sub = state.cart.reduce((s,c)=>s+(c.price*c.qty),0); const dlv = sub>999?0:30;
+            DOM.sub.innerText=`₹${sub}`; DOM.dlv.innerText=dlv?`₹${dlv}`:'FREE'; DOM.tot.innerText=`₹${sub+dlv}`;
+            DOM.checkoutBtn.style.opacity='1'; DOM.checkoutBtn.style.pointerEvents='all';
+        }
+
+        // ==========================================================================
+        // 6. EVENT LISTENERS & CHECKOUT
+        // ==========================================================================
+        const toggleCart = () => { DOM.cartOverlay.classList.toggle('active'); DOM.cartDrawer.classList.toggle('active'); };
+        document.getElementById('open-cart-btn').onclick = toggleCart; document.getElementById('close-cart-btn').onclick = toggleCart; DOM.cartOverlay.onclick = toggleCart;
+        
+        DOM.filters.onclick = e => { if(e.target.tagName==='BUTTON'){ state.category=e.target.dataset.c; renderProducts(); Array.from(DOM.filters.children).forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); }};
+        DOM.search.oninput = e => { state.query=e.target.value; renderProducts(); };
+        
+        document.getElementById('theme-toggle').onclick = function() {
+            state.dark = !state.dark; document.documentElement.setAttribute('data-theme', state.dark?'dark':'light');
+            localStorage.setItem('gf_theme', state.dark?'dark':'light');
+            this.innerHTML = state.dark?'<i class="fa-solid fa-sun"></i>':'<i class="fa-solid fa-moon"></i>';
+        };
+
+        // Accordion fix for FAQ
+        document.querySelectorAll('.faq-question').forEach(q => { q.onclick = () => q.parentElement.classList.toggle('active'); });
+
+        DOM.checkoutBtn.onclick = () => { toggleCart(); DOM.subPlanInput.value = ""; DOM.modal.style.display='flex'; };
+        document.getElementById('close-modal-btn').onclick = () => DOM.modal.style.display='none';
+        window.orderSubscription = (plan) => { DOM.subPlanInput.value = plan; DOM.modal.style.display='flex'; }
+
+        DOM.checkoutForm.onsubmit = e => {
+            e.preventDefault();
+            const name = document.getElementById('cust-name').value; const addr = document.getElementById('cust-address').value;
+            const plan = DOM.subPlanInput.value;
+            let text = `*NEW ORDER - Garia Fish Fix*%0A------------------------%0A`;
+            
+            if(plan) { text += `📦 *Subscription:* ${plan}%0A`; } 
+            else {
+                text += state.cart.map(c => `📦 ${c.title} (${c.var}) x ${c.qty} = ₹${c.price*c.qty}`).join('%0A');
+                const sub = state.cart.reduce((s,c)=>s+(c.price*c.qty),0); const dlv = sub>999?0:30;
+                text += `%0A------------------------%0A*Total Payable:* ₹${sub+dlv}%0A`;
+            }
+            text += `------------------------%0A👤 *Name:* ${name}%0A📍 *Loc:* ${addr}`;
+            
+            window.open(`https://wa.me/966572562151?text=${text}`, '_blank');
+            DOM.modal.style.display='none'; state.cart=[]; save(); renderCart(); DOM.checkoutForm.reset();
+        };
+
+        // ==========================================================================
+        // 7. FAKE SOCIAL PROOF TOASTS
+        // ==========================================================================
+        const names = ["Aditi", "Rahul", "Sreemoyee", "Anirban", "Priyanka", "Sourav", "Deblina"];
+        const locs = ["Garia", "Sonarpur", "Mahamayatala", "Patuli", "Narendrapur"];
+        
+        function showToast(msg, isSocial = true) {
+            const t = document.createElement('div'); t.className = 'dynamic-toast';
+            t.innerHTML = `<img src="https://randomuser.me/api/portraits/${Math.random()>0.5?'women':'men'}/${Math.floor(Math.random()*70)}.jpg" style="width:40px; height:40px; border-radius:50%; display:${isSocial?'block':'none'}">
+                           <div><p style="margin:0; font-size:0.85rem; font-weight:700;">${isSocial ? 'Recent Purchase' : 'Success'}</p><p style="margin:0; font-size:0.8rem; color:var(--text-muted);">${msg}</p></div>`;
+            document.getElementById('toast-container').appendChild(t);
+            setTimeout(() => t.classList.add('show'), 100);
+            setTimeout(() => { t.classList.remove('show'); setTimeout(()=>t.remove(), 500); }, 4000);
+        }
+
+        setInterval(() => {
+            if(productsDB.length > 0) {
+                const p = productsDB[Math.floor(Math.random()*productsDB.length)].title;
+                const n = names[Math.floor(Math.random()*names.length)];
+                const l = locs[Math.floor(Math.random()*locs.length)];
+                showToast(`<b>${n}</b> from ${l} just bought ${p}.`);
+            }
+        }, 15000);
+
+        // RUN THE APP
+        init();
+    </script>
+</body>
+</html>
